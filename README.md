@@ -6,3 +6,5 @@
 - INPUT 0-23 in binary with SW[5..0] and press KEY2 to latch hours
 - Set SW8 High to load latched values onto counter and make low to begin counting from loaded values
 - KEY3 will reset to 00:00:00
+
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/MLi5XLBwMiU/0.jpg)](http://www.youtube.com/watch?v=MLi5XLBwMiU "Clock Demonstration")
