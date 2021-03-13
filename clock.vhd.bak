@@ -1,0 +1,57 @@
+Library IEEE;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity count_sec_mins_hour is
+port(
+CLK, NRESET, LD_EN, TWELVEMODE: in std_logic;
+PM: out std_logic;
+LOADSEC, LOADMIN, LOADHR: in std_logic_vector(7 downto 0);
+SEC_LSD, SEC_MSD: out std_logic_vector(3 downto 0)
+MIN_LSD, MIN_MSD: out std_logic_vector(3 downto 0)
+HR_LSD, HR_MSD: out std_logic_vector(3 downto 0)
+);
+
+end;
+
+architecture counter of count_sec_mins_hour is
+signal COUNTER_TOTAL: integer range 0 to 86400;
+signal COUNTER_SECS: integer range 0 to 59;
+signal COUNTER_MINS: integer range 0 to 59;
+signal COUNTER_HRS: integer range 0 to 23;
+begin
+
+process(CLK,NRESET)
+begin
+	if NRESET='0' then
+		COUNTER_SECS <= 0;
+		COUNTER_MINS <= 0;
+		COUNTER_HRS <= 0;
+	
+	elsif rising_edge(CLK) then
+		
+		if LD_EN = '1' then
+			COUNTER_SECS <= TO_INTEGER(UNSIGNED(LOADSEC));
+			COUNTER_MINS <= TO_INTEGER(UNSIGNED(LOADMIN));
+			COUNTER_HRS <= TO_INTEGER(UNSIGNED(LOADHR));
+		
+		else
+			
+			if COUNTER_SECS = 59 then
+				COUNTER_SECS <= 0;
+					
+					if COUNTER_MINS = 59 then
+						COUNTER_MINS <= 0;
+							
+							if COUNTER_HRS = 23 then
+								COUNTER_HRS <= 0;
+							else COUNTER_HRS <= COUNTER_HRS + 1;
+							end if;
+						
+					else
+						COUNTER_MINS <= COUNTER_MINS + 1;
+					end if;
+			else
+				COUNTER_SECS <= COUNTER_SECS + 1;
+			end if;
+	end if;
